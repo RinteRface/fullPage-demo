@@ -2,7 +2,7 @@ library(fullPage)
 library(shiny)
 
 options <- list(
-  sectionsColor = c('#f2f2f2', '#4BBFC3', '#7BAABE'),
+  sectionsColor = c('#f2f2f2', '#4BBFC3', '#7BAABE', '#f2f2f2', '#f2f2f2', '#f2f2f2'),
   parallax = TRUE
 )
 
@@ -11,7 +11,8 @@ ui <- fullPage(
            "Sections" = "link2",
            "Slides" = "section3",
            "backgrounds" = "section4",
-           "Background Slides" = "section5"),
+           "Background Slides" = "section5",
+           "More" = "more"),
   opts = options,
   fullSection(
     center = TRUE,
@@ -78,6 +79,16 @@ ui <- fullPage(
     ),
     fullSlidePlot(
       "slideSectionPlot2"
+    )
+  ),
+  fullSection(
+    center = TRUE,
+    menu = "more",
+    h1("Other similar templates"),
+    fullButton(
+      outline = FALSE,
+      href = "http://john-coene.com/",
+      "More"
     )
   )
 )
