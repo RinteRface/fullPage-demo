@@ -1,135 +1,117 @@
-library(fullPage)
 library(shiny)
+library(fullPage)
 
 options <- list(
-  sectionsColor = c('#f2f2f2', '#4BBFC3', '#7BAABE', '#f2f2f2', '#f2f2f2', '#f2f2f2'),
-  parallax = TRUE
+  sectionsColor = c(
+    "#C3F3EC",
+    "#FE9199",
+    "#FFADB2",
+    "#FFCAB1",
+    "#C3F3EC",
+    "#FE9199",
+    "#FFADB2"
+  )
 )
 
 ui <- fullPage(
-  menu = c("Full Page" = "link1",
-           "Sections" = "link2",
-           "Slides" = "section3",
-           "backgrounds" = "section4",
-           "Background Slides" = "section5",
-           "More" = "more"),
+  center = TRUE,
   opts = options,
-  fullSection(
-    center = TRUE,
-    menu = "link1",
-    tags$h1("fullPage.js meets Shiny")
+  menu = c(
+    "FullPage" = "intro",
+    "Slides" = "slides",
+    "Grid" = "grid",
+    "Plots bg" = "plotbg",
+    "Slides bg" = "slidebg",
+    "Buttons" = "buttons",
+    "Sisters" = "sisters"
   ),
   fullSection(
-    menu = "link2",
-    fullRow(
-      h2("Milligram's grid"),
-      fullColumn(
-        h3("Input column"),
-        selectInput(
-          "dd",
-          "data points",
-          choices = c(10, 20, 30)
-        )
-      ),
-      fullColumn(
-        plotOutput("hist")
-      ),
-      fullColumn(
-        plotOutput("plot")
-      )
+    menu = "intro",
+    h1("fullPage.js meets Shiny.")
+  ),
+  fullSection(
+    menu = "slides",
+    fullSlide(
+      h1("Slide 1")
+    ),
+    fullSlide(
+      h1("Slide 2")
     )
   ),
   fullSection(
-    menu = "section3",
-    fullSlide(
-      fullContainer(
-        center = TRUE,
-        h3("With container"),
-        plotOutput("slideplot2"),
-        shiny::verbatimTextOutput("containerCode")
-      )
-    ),
-    fullSlide(
-      center = TRUE,
-      h3("Without container"),
-      plotOutput("slideplot1")
+    menu = "grid",
+    fullContainer(
+      h1("Grid System"),
+      fullRow(
+        fullColumn(
+          h2("Use Columns")
+        ),
+        fullColumn(
+          plotOutput("plot1")
+        )
+      ),
+      p("from Miligram*")
     )
   ),
   fullSectionPlot(
-    menu = "section4",
-    center = TRUE,
-    "fp",
-    h3("Background plots"),
+    "plot2",
+    menu = "plotbg",
     fullContainer(
+      h2("Background plots"),
       sliderInput(
-        "fpInput",
-        label = "Input",
+        "input1",
+        "Obs",
         min = 10,
-        max = 100,
-        value = 74
+        max = 500,
+        step = 10,
+        value = 250
       )
     )
   ),
   fullSection(
-    menu = "section5",
-    fullSlidePlot(
-      "slideSectionPlot1",
-      center = TRUE,
-      h1("Slide background plot")
+    menu = "slidebg",
+    fullSlide(
+      h2("Slide is here ->")
     ),
     fullSlidePlot(
-      "slideSectionPlot2"
+      "plot3"
     )
   ),
   fullSection(
-    center = TRUE,
-    menu = "more",
-    h1("Other similar templates"),
-    fullButton(
-      outline = FALSE,
-      href = "http://john-coene.com/",
-      "More"
+    menu = "buttons",
+    fullContainer(
+      h1("Include buttons"),
+      fullButtonDown("Next Section", outline = TRUE)
     )
+  ),
+  fullSection(
+    menu = "sisters",
+    h1("Sister functions"),
+    verbatimTextOutput("sistersDemo")
   )
 )
 
 server <- function(input, output){
   
-  output$plot <- renderPlot({
-    hist(rnorm(input$dd, 1, 10))
-  })
-  
-  output$hist <- renderPlot({
-    hist(rnorm(input$dd, 1, 10))
-  })
-  
-  output$slideplot1 <- renderPlot({
-    plot(mtcars$mpg, mtcars$drat)
-  })
-  
-  output$slideplot2 <- renderPlot({
+  output$plot1 <- renderPlot({
+    par(bg = "#FFADB2")
     plot(mtcars$wt, mtcars$mpg)
   })
   
-  output$fp <- renderPlot({
-    par(bg = "lightgray")
-    hist(rnorm(input$fpInput, 1, 10))
+  output$plot2 <- renderPlot({
+    par(bg = "#F3F3F3")
+    hist(rnorm(input$input1, mean = 25, sd = 5))
   })
   
-  output$containerCode <- renderText({
-    "fullSlide(
-      fullContainer(...)
-    )"
+  output$plot3 <- renderPlot({
+    par(bg = "#FFADB2")
+    plot(1:nrow(mtcars), mtcars$drat, type = "l")
   })
   
-  output$slideSectionPlot1 <- renderPlot({
-    par(bg = "lightblue")
-    hist(rnorm(50, 1, 20))
-  })
-  
-  output$slideSectionPlot2 <- renderPlot({
-    par(bg = "gray50")
-    hist(rnorm(50, 1, 25))
+  output$sistersDemo <- renderText({
+    '# See those
+    demo("pagePiling", package = "fullPage")
+    demo("multiPage", package = "fullPage")'
   })
 }
 
