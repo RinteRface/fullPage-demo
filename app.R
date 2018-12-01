@@ -29,7 +29,20 @@ ui <- fullPage(
   ),
   fullSection(
     menu = "intro",
-    h1("fullPage.js meets Shiny.")
+    h1("fullPage.js meets Shiny."),
+    br(),
+    img(
+      src = "http://rinterface.com/inst/images/fullPage.svg",
+      height = "200px"
+    ),
+    br(),
+    p(
+      "Source code",
+      tags$a(
+        "here", 
+        href = "https://github.com/RinteRface/fullPage-demo"
+      )
+    )
   ),
   fullSection(
     menu = "slides",
